@@ -9,3 +9,5 @@ google-genai
 jsonwebtoken
 python-jose[cryptography] 
 python-multipart
+pytest
+httpx
