@@ -8,3 +8,4 @@ openai
 google-genai
 jsonwebtoken
 python-jose[cryptography] 
+passlib 
