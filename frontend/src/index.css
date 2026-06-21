@@ -1,0 +1,38 @@
+@import url('https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,700;1,700&family=DM+Sans:wght@300;400;500;600&display=swap');
+
+*{ box-sizing: border-box; margin: 0; padding: 0; }
+
+:root {
+  --forest:  #606E52;
+  --dark:    #2A2A26;
+  --mid:     #9B9488;
+  --cream:   #E8E4DA;
+  --paper:   #F5F2EC;
+  --border:  #EDE8DF;
+  --light:   #C0CCA4;
+
+  --font-display: 'Playfair Display', serif;
+  --font-body:    'DM Sans', sans-serif;
+}
+
+body {
+  background: var(--cream);
+  font-family: var(--font-body);
+  color: var(--dark);
+  min-height: 100vh;
+}
+
+/* Card hover */
+.entry-card {
+  transition: transform 0.15s ease, border-color 0.15s ease;
+}
+.entry-card:hover {
+  transform: translateY(-3px);
+  border-color: var(--light);
+}
+
+/* Category pill hover */
+.cat-pill:hover {
+  border-color: var(--forest);
+  color: var(--forest);
+}
