@@ -8,5 +8,5 @@ openai
 google-genai
 jsonwebtoken
 python-jose[cryptography] 
-passlib 
+passlib[bcrypt]
 python-multipart
