@@ -9,4 +9,3 @@ google-genai
 bcryptjs 
 jsonwebtoken
 python-jose[cryptography] 
-passlib[bcrypt]
