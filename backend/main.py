@@ -15,7 +15,6 @@ from pydantic import BaseModel
 from sqlalchemy.orm import Session
 from sqlalchemy import func
 from jose import JWTError, jwt
-from passlib.context import CryptContext
 
 from database import init_db, get_db, ActivityLog, UserProfile, User
 from carbon_math import (
@@ -43,16 +42,24 @@ SECRET_KEY        = os.getenv("JWT_SECRET", "flora-dev-secret-change-in-producti
 ALGORITHM         = "HS256"
 TOKEN_EXPIRE_DAYS = 30
 
-pwd_context   = CryptContext(schemes=["bcrypt"], deprecated="auto")
 bearer_scheme = HTTPBearer(auto_error=False)
 
 
-def _hash_password(password: str) -> str:
-    return pwd_context.hash(password)
+import hashlib
+import hmac
 
+def _hash_password(password: str) -> str:
+    salt = os.urandom(32).hex()
+    key  = hashlib.pbkdf2_hmac('sha256', password.encode(), salt.encode(), 100000).hex()
+    return f"{salt}${key}"
 
 def _verify_password(plain: str, hashed: str) -> bool:
-    return pwd_context.verify(plain, hashed)
+    try:
+        salt, key = hashed.split('$')
+        new_key   = hashlib.pbkdf2_hmac('sha256', plain.encode(), salt.encode(), 100000).hex()
+        return hmac.compare_digest(key, new_key)
+    except Exception:
+        return False
 
 
 def _create_token(user_id: str) -> str:
