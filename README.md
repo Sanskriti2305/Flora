@@ -5,7 +5,9 @@
 Flora turns abstract carbon numbers into something you can actually feel — a weather forecast for your footprint, AI-powered swap suggestions, and a receipt scanner that logs your groceries automatically. Built for people who care about the planet but don't have time to be climate scientists.
 
 ---
+🌐 **Live demo:** [flora-gray.vercel.app](https://flora-gray.vercel.app)
 
+---
 ## 🌍 The Problem
 
 Most carbon trackers show you a number and leave you stuck. "You emitted 4.2 kg CO₂ today" — but what does that *mean*? What should you *do* about it? Flora answers both questions, every single day.
