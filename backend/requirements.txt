@@ -6,6 +6,5 @@ python-dotenv
 anthropic
 openai
 google-genai
-bcryptjs 
 jsonwebtoken
 python-jose[cryptography] 
