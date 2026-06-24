@@ -11,3 +11,4 @@ python-jose[cryptography]
 python-multipart
 pytest
 httpx
+psycopg2-binary
