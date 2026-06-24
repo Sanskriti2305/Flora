@@ -1,24 +1,30 @@
 """
-database.py — SQLite database setup using SQLAlchemy.
+database.py — Database setup using SQLAlchemy.
 
-Design choice: SQLite for the hackathon (zero setup, file-based, perfect for
-a demo/judge to run instantly with no external DB server needed). The code
-is written against SQLAlchemy's ORM, so swapping to PostgreSQL later is a
-one-line connection string change, not a rewrite.
+Switched from SQLite to Supabase (PostgreSQL) for deployment.
+The ORM models are identical — SQLAlchemy abstracts the difference.
+Only three things changed from the SQLite version:
+  1. DATABASE_URL now reads from the environment variable
+  2. connect_args removed (that was SQLite-only)
+  3. init_db() simplified — no PRAGMA migration needed on PostgreSQL,
+     create_all() handles everything
 """
 
-from sqlalchemy import create_engine, Column, Integer, String, Float, DateTime, Boolean, text
+import os
+from sqlalchemy import create_engine, Column, Integer, String, Float, DateTime, Boolean
 from sqlalchemy.orm import declarative_base, sessionmaker
 from datetime import datetime
 
-DATABASE_URL = "sqlite:///./flora.db"
+# Set this in your .env (or deployment environment variables):
+# DATABASE_URL=postgresql://postgres:[PASSWORD]@db.xxxxxxxxxxxx.supabase.co:5432/postgres
+DATABASE_URL = os.getenv("DATABASE_URL", "sqlite:///./flora.db")
 
-engine = create_engine(DATABASE_URL, connect_args={"check_same_thread": False})
+engine       = create_engine(DATABASE_URL)
 SessionLocal = sessionmaker(autocommit=False, autoflush=False, bind=engine)
-Base = declarative_base()
+Base         = declarative_base()
 
 
-# ── NEW: Auth user table ──────────────────────────────────────────────────────
+# ── Auth user table ───────────────────────────────────────────────────────────
 class User(Base):
     __tablename__ = "users"
 
@@ -51,7 +57,7 @@ class UserProfile(Base):
     __tablename__ = "user_profiles"
 
     user_id             = Column(String, primary_key=True)
-    display_name        = Column(String, default="You")   # ← was "Friend", fixed
+    display_name        = Column(String, default="You")
     primary_transport   = Column(String, default="car_petrol")
     diet_pattern        = Column(String, default="chicken")
     current_streak_days = Column(Integer, default=0)
@@ -69,48 +75,11 @@ class UserProfile(Base):
 
 def init_db():
     """
-    Creates tables if they don't exist, then adds any missing columns
-    to existing tables (safe migration for SQLite which lacks ALTER TABLE
-    support for adding multiple columns at once).
+    Creates all tables if they don't exist.
+    PostgreSQL supports proper DDL — no manual column migration needed.
+    SQLAlchemy's create_all() is safe to call repeatedly (skips existing tables).
     """
-    # Creates all new tables (including `users`) if they don't exist yet.
-    # Existing tables are left untouched — no data loss.
     Base.metadata.create_all(bind=engine)
-
-    with engine.connect() as conn:
-        # ── Migrate user_profiles: add extended lifestyle columns ─────────────
-        existing_profile_cols = [
-            row[1] for row in
-            conn.execute(text("PRAGMA table_info(user_profiles)")).fetchall()
-        ]
-        for col_name, col_type in [
-            ("heating_type",     "VARCHAR"),
-            ("energy_provider",  "VARCHAR"),
-            ("shopping_habits",  "VARCHAR"),
-            ("flights_per_year", "VARCHAR"),
-            ("home_type",        "VARCHAR"),
-            ("household_size",   "VARCHAR"),
-        ]:
-            if col_name not in existing_profile_cols:
-                conn.execute(text(
-                    f"ALTER TABLE user_profiles ADD COLUMN {col_name} {col_type}"
-                ))
-
-        # ── Migrate users: add any new columns safely ─────────────────────────
-        existing_user_cols = [
-            row[1] for row in
-            conn.execute(text("PRAGMA table_info(users)")).fetchall()
-        ]
-        for col_name, col_type in [
-            ("display_name",  "VARCHAR"),
-            ("created_at",    "DATETIME"),
-        ]:
-            if col_name not in existing_user_cols:
-                conn.execute(text(
-                    f"ALTER TABLE users ADD COLUMN {col_name} {col_type}"
-                ))
-
-        conn.commit()
 
 
 def get_db():
