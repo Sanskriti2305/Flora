@@ -96,7 +96,7 @@ export default function App() {
       <aside
         role="navigation"
         aria-label="Main navigation"
-        style={{ width:'220px', minHeight:'100vh', position:'fixed', top:0, left:0, display:'flex', flexDirection:'column', overflow:'hidden' }}
+        style={{ width:'220px', height:'100vh', position:'fixed', top:0, left:0, display:'flex', flexDirection:'column', overflowX:'hidden' }}
       >
         <div style={{ position:'absolute', inset:0, background:`url('/sidebar-bg.jpg') center/cover no-repeat, #606E52`, zIndex:0 }}/>
         <div style={{ position:'absolute', inset:0, background:'#606E52', zIndex:0 }}>
@@ -115,7 +115,7 @@ export default function App() {
         </div>
         <div style={{ position:'absolute', inset:0, background:'rgba(60,75,40,0.72)', zIndex:1 }}/>
 
-        <div style={{ position:'relative', zIndex:2, padding:'26px 14px', display:'flex', flexDirection:'column', height:'100%', gap:'3px' }}>
+        <div style={{ position:'relative', zIndex:2, padding:'26px 14px', display:'flex', flexDirection:'column', height:'100%', gap:'3px', overflowY:'auto'}}>
           <div role="banner" style={{ marginBottom:'26px', padding:'13px 15px', background:'rgba(255,255,255,0.13)', border:'1.5px solid rgba(255,255,255,0.22)', borderRadius:'14px' }}>
             <p style={{ fontFamily:'var(--font-display)', fontSize:'30px', color:'#fff', letterSpacing:'-0.5px', lineHeight:1 }}>Flora</p>
             <p style={{ fontSize:'9px', color:'#C0CCA4', letterSpacing:'2.5px', textTransform:'uppercase', marginTop:'3px' }}>Carbon Tracker</p>
