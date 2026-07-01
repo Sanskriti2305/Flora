@@ -155,28 +155,6 @@ export default function Auth({ onAuthSuccess }) {
         <p style={{ fontSize:'11px', color:'#C0CCA4', textAlign:'center', marginTop:'20px' }}>
           Your data stays private — tracked locally, never sold.
         </p>
-
-                {/* Developer credit + Digital Heroes */}
-        <div style={{ borderTop:'1px solid #EDE8DF', marginTop:'20px', paddingTop:'16px', textAlign:'center' }}>
-          <p style={{ fontSize:'11px', color:'#9B9488', marginBottom:'4px' }}>
-            <strong style={{ color:'#606E52' }}>Sanskriti Shukla</strong> · sanskriti.sg05@gmail.com
-          </p>
-          <a
-            href="https://digitalheroesco.com"
-            target="_blank"
-            rel="noopener noreferrer"
-            style={{
-              display:'inline-block', marginTop:'8px', padding:'8px 18px',
-              background:'#606E52', color:'#fff', borderRadius:'20px',
-              fontSize:'11px', fontWeight:600, textDecoration:'none',
-              fontFamily:'var(--font-body,inherit)', transition:'opacity 0.2s',
-            }}
-            onMouseEnter={e => e.currentTarget.style.opacity = '0.85'}
-            onMouseLeave={e => e.currentTarget.style.opacity = '1'}
-          >
-            Built for Digital Heroes
-          </a>
-        </div>
       </div>
     </div>
   )
